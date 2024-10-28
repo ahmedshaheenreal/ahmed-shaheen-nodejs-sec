@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head') %>
+
+<body>
+    <main>
+        <form action="/create" method="post">
+        <div>
+            <label for="name">File Name: </label>
+            <input type="text" name="name" id="name">
+
+        </div>
+
+          <div>
+            <label for="content">File content: </label>
+            <input type="text" name="content" id="content">
+          </div>
+            <button>Submit</button>
+        </form>
+    </main>
+</body>
+</html>

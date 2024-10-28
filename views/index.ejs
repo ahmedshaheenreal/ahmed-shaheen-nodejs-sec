@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+<body>
+    <header>
+        <h1>File Management System</h1>
+    </header>
+    <main>
+    <div class="container">
+        <div class="flex-between">
+            <h1>Your Current Files</h1>
+            <a href="/create">Create File</a>
+        </div>
+        <ul>
+            <%data.forEach((e,index)=>{ %>
+                 <li class="flex-between"><p><%=e%></p> 
+                     <div class="btns-area">
+                        <button class="my-btn" id="<%=e%>" onclick="toggleForm(this.id)">Edit</button> 
+                        <a href="/file/<%=e%>">View</a> 
+                        <button name="file/<%=e%>" class="my-btn"  onclick="deleteFunc(this.getAttribute('name'))" style="background-color: red;">Delete</button>
+
+                    </div>
+                </li> 
+          <%  })  %>
+        </ul>
+
+        <div class="modal" >
+            <span onclick="closeModal()">Close</span>
+            <form id="edit-form">
+                <label for="editFeild">Enter new name</label>
+                <input type="text"  value="" id="currentName">
+                <input type="text" name="newValue" id="newName" >
+                <button >Submit</button>
+            </form>
+        </div>
+    </div>
+    </main> 
+    <script >
+        let isShown = false;
+        let modal = document.querySelector('.modal')
+        let form = document.querySelector('#edit-form')
+        let currNameInput = document.getElementById("currentName")
+        let newNameInput = document.getElementById("newName")
+        let deleteBtn = document.getElementById('delete-btn')
+        console.log(deleteBtn)
+       function closeModal(){
+        modal.classList.remove("modal-style-block")
+
+       }
+      function toggleForm(name){
+       if(!isShown){
+        isShown=true;
+        modal.classList.add("modal-style-block")
+        currNameInput.value = name;
+        currNameInput.disabled=true;
+       }else{
+        isShown=false;
+        modal.classList.remove("modal-style-block")
+       }
+    }
+    console.log("This is form,",form)
+    form.addEventListener('submit',mySub)
+    function mySub (e){
+        e.preventDefault();
+
+        const data ={
+            currentName:currNameInput.value,
+            newName:newNameInput.value,
+        }
+         console.log(data)
+
+        fetch(`http://localhost:3000/edit/${currNameInput.value}`, 
+        {  method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json',
+        
+            }, 
+            body: JSON.stringify(data),
+        })
+
+    }
+  function deleteFunc(name){
+       
+        const data = {
+            filename:name,
+        }
+        fetch(`http://localhost:3000/${name}`,
+        {  method: 'DELETE',
+          
+        })
+    }
+      
+    </script>
+</body>
+
+</html>
