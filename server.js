@@ -10,9 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'))
 
-//mvc design pattern
-//lookup polling app
-//error handling videos
+
 app.get("/",async (req,res,next)=>{
  try{ 
 
